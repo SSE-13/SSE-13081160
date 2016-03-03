@@ -16,7 +16,7 @@
 ##代码片段：
  import UIKit     
  class ViewController:UIVewController{     
-   override func viewDidLoad(){
+   override func viewDidLoad(){     
      super.viewDidLoad()     
      }     
    override func didReceiveMemoryWarning(){     
