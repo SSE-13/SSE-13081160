@@ -121,12 +121,22 @@ var text = new TextField();
 text.x = 10;
 
 var bitmap = new Bitmap();
-bitmap.source = 'wander-icon.jpg';
+bitmap.source = 'beijing.jpg';
+
+var bitmap2 = new Bitmap();
+bitmap2.source = 'pai.jpg';
+bitmap2.x=925;
+bitmap2.y=419;
+
+var bitmap3 = new Bitmap();
+bitmap3.source = 'tankuang.jpg';
+bitmap3.x=409;
+bitmap3.y=258;
 
 //渲染队列
-var renderQueue = [rect, rect2, text,bitmap];
+var renderQueue = [rect, rect2, text,bitmap,bitmap2,bitmap3];
 //资源加载列表
-var imageList = ['wander-icon.jpg'];
+var imageList = ['beijing.jpg','pai.jpg','tankuang.jpg'];
 
 //先加载资源，加载成功之后执行渲染队列
 loadResource(imageList, function() {
