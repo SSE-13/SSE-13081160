@@ -59,12 +59,16 @@ class Rect extends DisplayObject {
 }
 
 class TextField extends DisplayObject {
+      font = "20px Arial"; 
+      color = '#000000';
+       filltext = 'HelloWorld'; 
 
-    render(context: CanvasRenderingContext2D) {
-        context.font = "20px Arial";
-        context.fillStyle = '#000000';
-        context.fillText('HelloWorld', 0, 20);
-    }
+      render(context: CanvasRenderingContext2D) { 
+          context.font = this.font; 
+          context.fillStyle = this.color; 
+          context.fillText(this.filltext, 0, 20); 
+    } 
+
 }
 
 function drawQueue(queue) {
@@ -110,15 +114,27 @@ rect.color = '#00FF00'
 
 
 var rect2 = new Rect();
-rect2.width = 300;
-rect2.height = 50;
-rect2.x = 200;
-rect2.y = 200;
-rect2.rotation = Math.PI / 8;
-rect2.color = '#00FFFF'
+rect2.width = 200;
+rect2.height = 95;
+rect2.x = 418;
+rect2.y = 418;
+rect2.color = '#00FF00';
 
-var text = new TextField();
-text.x = 10;
+
+
+var text = new TextField(); 
+text.x = 468; 
+text.y = 448; 
+text.font = "20px Arial"; 
+text.color = '#FFFFFF'; 
+text.filltext = '分数：13081160'; 
+
+var text2 = new TextField(); 
+text2.x = 468; 
+text2.y = 469; 
+text2.font = "20px Arial"; 
+text2.color = '#FFFFFF'; 
+text2.filltext = '操作：66666666'; 
 
 var bitmap = new Bitmap();
 bitmap.source = 'beijing.jpg';
@@ -134,7 +150,7 @@ bitmap3.x=409;
 bitmap3.y=258;
 
 //渲染队列
-var renderQueue = [rect, rect2, text,bitmap,bitmap2,bitmap3];
+var renderQueue = [rect,text,bitmap,bitmap2,bitmap3,rect2,text,text2];
 //资源加载列表
 var imageList = ['beijing.jpg','pai.jpg','tankuang.jpg'];
 
