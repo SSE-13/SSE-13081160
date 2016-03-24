@@ -3,6 +3,8 @@
  */
 const GRAVITY = 9.8;
 
+const BOUNDS_TOP = 0;
+
 const BOUNDS_BOTTOM = 400;
 
 const BOUNDS_LEFT = 0;
@@ -11,7 +13,7 @@ const BOUNDS_RIGHT = 400;
 
 const BOUNCE = 0.95;
 
-const FRICTION = 0.5;
+const ug = -0.5;
 
 /**
  * 计时器系统
@@ -56,46 +58,38 @@ class Body {
     displayObject;
 
     constructor(displayObject: DisplayObject) {
-        this.displayObject = displayObject;
+            this.displayObject = displayObject;
     }
 
     public onTicker(duringTime) {
 
-        this.vy += duringTime * GRAVITY;
-        this.y += duringTime * this.vy;
-               
-        
-       
-        this.x += duringTime * this.vx;
-        
-       
-
-        
-        //反弹
-        if (this.y + this.height > BOUNDS_BOTTOM) {
+        if(Math.abs(this.vy)<1&&this.y + this.height > BOUNDS_BOTTOM ){
             
-            this.y = 300;
+            this.vy=0;
+            this.vx= this.vx *BOUNCE;
+            this.x += duringTime * this.vx;
+            this.y += duringTime * this.vy;
+       } 
+       
+       else{
+           
+            this.vy += duringTime * GRAVITY;
+            this.x += duringTime * this.vx;
+            this.y += duringTime * this.vy;
+       }
+       
+        //反弹
+        if ((this.y + this.height > BOUNDS_BOTTOM && this.vy > 0) || (this.y < BOUNDS_TOP && this.vy < 0)) {
             this.vy = -BOUNCE * this.vy;
-            //摩擦
-            if(this.vx > 0){
-                this.vx = this.vx - FRICTION
-            }
-            if(this.vx < 0){
-                this.vx = this.vx + FRICTION
-            }
+            
+        
         }
 
         //TODO： 左右越界反弹
-        if (this.x + this.width > BOUNDS_RIGHT) {
-            this.x = 250;
-            this.vx = -BOUNCE * this.vx;
-        }
-        if (this.x + this.width < BOUNDS_LEFT +150 ) {
-            this.x = 0;
-            this.vx = -BOUNCE * this.vx;
-        }
-        
-        
+       if ((this.x+this.width > BOUNDS_RIGHT &&this.vx>0) || (this.x < BOUNDS_LEFT && this.vx < 0)){
+           this.vx = -BOUNCE * this.vx;
+       }
+       
 
 
         //根据物体位置更新显示对象属性
