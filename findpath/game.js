@@ -23,12 +23,19 @@ var game;
             grid.setWalkable(5, 5, false);
         }
         WorldMap.prototype.render = function (context) {
-            context.fillStyle = '#0000FF';
             context.strokeStyle = '#FF0000';
             context.beginPath();
             for (var i = 0; i < NUM_COLS; i++) {
                 for (var j = 0; j < NUM_ROWS; j++) {
-                    context.rect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
+                    if (!this.grid.getNode(i, j).walkable) {
+                        context.fillRect(i * GRID_PIXEL_WIDTH, (j - 1) * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
+                        context.fillRect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
+                        context.fillStyle = '#000000';
+                    }
+                    else {
+                        context.rect(i * GRID_PIXEL_WIDTH, j * GRID_PIXEL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT);
+                        context.fillStyle = '#0000FF';
+                    }
                     context.fill();
                     context.stroke();
                 }
@@ -57,6 +64,9 @@ var game;
         __extends(BoyBody, _super);
         function BoyBody() {
             _super.apply(this, arguments);
+            this.x1 = new Array();
+            this.y1 = new Array();
+            this.l = 1;
         }
         BoyBody.prototype.run = function (grid) {
             grid.setStartNode(0, 0);
@@ -65,10 +75,20 @@ var game;
             findpath.setHeurisitic(findpath.diagonal);
             var result = findpath.findPath(grid);
             var path = findpath._path;
+            for (var i = 0; i < path.length; i++) {
+                this.x1[i] = path[i].x;
+                this.y1[i] = path[i].y;
+            }
             console.log(path);
             console.log(grid.toString());
         };
         BoyBody.prototype.onTicker = function (duringTime) {
+            if (this.x < NUM_ROWS * GRID_PIXEL_WIDTH && this.y < NUM_COLS * GRID_PIXEL_HEIGHT) {
+                this.x = this.x1[this.l] * GRID_PIXEL_WIDTH;
+                this.y = this.y1[this.l] * GRID_PIXEL_HEIGHT;
+                this.l++;
+                console.log(this.x, this.y);
+            }
         };
         return BoyBody;
     }(Body));
