@@ -32,7 +32,8 @@ var render;
             else {
                 //TODO:
                 // GLOBAL_MATRIX = PARENT_GLOBAL_MATRIX * LOCAL_MATRIX
-                this.globalMatrix = localMatrix;
+                var parentGlobelMatrix = this.parent.globalMatrix;
+                this.globalMatrix.transformToGlobel(localMatrix, parentGlobelMatrix);
             }
             context.setTransform(this.globalMatrix.a, this.globalMatrix.b, this.globalMatrix.c, this.globalMatrix.d, this.globalMatrix.tx, this.globalMatrix.ty);
             this.render(context);
