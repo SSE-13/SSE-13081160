@@ -7,6 +7,11 @@ function readFile() {
     var mapData = obj.map;
     return mapData;
 }
+function writeFlie() {
+    var map_path = __dirname + "/map.json";
+    var obj = JSON.stringify({ map: mapData });
+    var jfkj = fs.writeFileSync(map_path, obj, "utf-8");
+}
 function createMapEditor() {
     var world = new editor.WorldMap();
     var rows = mapData.length;
@@ -27,12 +32,38 @@ function createMapEditor() {
     }
     return world;
 }
+var container = new render.DisplayObjectContainer();
+var button = new render.Rect();
+container.addChild(button);
+button.x = 300;
+button.y = 300;
+button.width = 100;
+button.height = 50;
+var textButton = new render.TextField();
+container.addChild(textButton);
+textButton.text = "保存";
+textButton.x = 300;
+textButton.y = 300;
 function onTileClick(tile) {
-    console.log(tile);
+    var tileWalkable = mapData[tile.ownedRow][tile.ownedCol];
+    if (tileWalkable == 1) {
+        tileWalkable = 0;
+    }
+    else if (tileWalkable == 0) {
+        tileWalkable = 1;
+    }
+    mapData[tile.ownedRow][tile.ownedCol] = tileWalkable;
+    tile.setWalkable(tileWalkable);
+}
+function onButtonClick(button) {
+    writeFlie();
+    console.log("click");
 }
 var mapData = readFile();
 var renderCore = new render.RenderCore();
 var eventCore = new events.EventCore();
 eventCore.init();
+eventCore.register(button, events.displayObjectRectHitTest, onButtonClick);
 var editor = createMapEditor();
-renderCore.start(editor);
+container.addChild(editor);
+renderCore.start(container);
